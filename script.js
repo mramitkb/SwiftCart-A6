@@ -1,8 +1,11 @@
+// Trending Product
 const loadTrendingProduct = () => {
+    showLoader(true)
     fetch('https://fakestoreapi.com/products')
     .then(res => res.json())
     .then(data => {
         showTrendingProduct(data);
+        showLoader(false)
     })
 }
 const showTrendingProduct = (products) => {
@@ -38,7 +41,7 @@ const showTrendingProduct = (products) => {
     })
 }
 
-
+// Product Details
 const loadProductDetail = async(id) => {
     const url = `https://fakestoreapi.com/products/${id}`;
     const res = await fetch(url);
@@ -70,36 +73,95 @@ const showProductDetail = (product) => {
     document.getElementById('detail_modal').showModal();
 }
 
-loadTrendingProduct()
+
 
 // All Categories
-// const allCategories = async () => {
-//     const res = await fetch("https://fakestoreapi.com/products/categories");
-//     const data =await res.json();
-//     console.log(data);
-// }
+const allCategories = async () => {
+    const res = await fetch("https://fakestoreapi.com/products/categories");
+    const data =await res.json();
+    setAllCategories(data);
+}
 
-// const setAllCategories = (categories) => {
-//     console.log(categories);
-// }
-// allCategories()
+const setAllCategories = (categories) => {
+    const categoriesContainer = document.getElementById("category-container");
+    if(!categoriesContainer) return;
+    categoriesContainer.innerHTML = "";
+
+    const allBtn = document.createElement("button");
+    allBtn.innerText = "All";
+    allBtn.classList = "btn rounded-2xl btn-category bg-[#5945F7] text-white";
+
+    allBtn.addEventListener("click", () => {
+        handleAllProducts(allBtn)
+    })
+    categoriesContainer.appendChild(allBtn);
+
+    categories.forEach((category, idx) => {
+        const categoryBtn = document.createElement("button");
+        categoryBtn.innerText = category;
+        categoryBtn.classList = "btn rounded-2xl btn-category";
+        categoryBtn.addEventListener("click", () => {
+            handleSelectedCategory(category, categoryBtn)
+        })
+        // categoryBtn.innerHTML = `
+        // <button id="category-btn-${idx}" 
+        // onclick="handleSelectedCategory(\`${category}\`, this)" 
+        // class="btn rounded-2xl hover:bg-[#5945F7] hover:text-white hover:shadow-none border-px btn-category">
+        // ${category}
+        // </button>
+        // `
+        categoriesContainer.appendChild(categoryBtn)
+    })
+}
+
+const handleSelectedCategory = async(category, button) => {
+    // remove active button
+    document.querySelectorAll(".btn-category").forEach(btn => {
+        btn.classList.remove('bg-[#5945F7]', 'text-white');
+    })
+
+    // add active button when clicked
+    button.classList.add('bg-[#5945F7]', 'text-white');
+
+    showLoader(true)
+    const res = await fetch(`https://fakestoreapi.com/products/category/${category}`);
+    const data = await res.json();
+    showAllProducts(data);
+    showLoader(false)
+}
+
+const handleAllProducts = async (button) => {
+    // remove active from all buttons
+    document.querySelectorAll(".btn-category").forEach(btn => {
+        btn.classList.remove('bg-[#5945F7]', 'text-white');
+    });
+
+    // active All button
+    button.classList.add('bg-[#5945F7]', 'text-white');
+
+    // load all products again
+    loadAllProducts();
+}
+
+
+
 
 
 // All Products
-
 const loadAllProducts = async () => {
+    showLoader(true)
     const res = await fetch("https://fakestoreapi.com/products");
     const data = await res.json();
     showAllProducts(data);
+    showLoader(false)
 }
 
 const showAllProducts = (products) => {
-    console.log(products);
 
     const productsContainer = document.getElementById("products-container");
     productsContainer.innerHTML = "";
 
-    const product = products.forEach(product => {
+    products.forEach(product => {
         const card = document.createElement("div");
     card.innerHTML = `
     <div class="border-2 border-gray-200 rounded-xl flex flex-col h-full">
@@ -123,4 +185,41 @@ const showAllProducts = (products) => {
     productsContainer.appendChild(card)
     })
 }
-loadAllProducts()
+
+// loading spinner
+const showLoader = (status) => {
+    if(status) {
+        const loader = document.getElementById("loader");
+        if(loader) loader.classList.remove("hidden");
+    }
+    else {
+        const loader = document.getElementById("loader");
+    if(loader) loader.classList.add("hidden");
+    }
+}
+
+// Navbar Active
+const setActiveNav = () => {
+    const currentPath = window.location.pathname;
+
+    document.querySelectorAll(".nav-link").forEach(link => {
+        link.classList.remove("text-[#5945F7]", "font-bold");
+
+        if(link.getAttribute("href") === currentPath){
+            link.classList.add("text-[#5945F7]", "font-bold");
+        }
+    });
+}
+
+// By default Trending showed
+const homeVSProducts = () => {
+    loadTrendingProduct();
+    setActiveNav();
+
+    if(document.getElementById("products-container")){
+        loadAllProducts();
+        allCategories();
+    }
+}
+
+homeVSProducts();

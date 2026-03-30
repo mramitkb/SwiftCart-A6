@@ -31,20 +31,20 @@
                         </div>
                         <ul tabindex="-1"
                             class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-40 p-2 shadow gap-3">
-                            <li class="border rounded-lg"><a href="/">Home</a></li>
-                        <li class="border rounded-lg"><a href="/products.html">Products</a></li>
-                        <li class="border rounded-lg"><a href="/">About</a></li>
-                        <li class="border rounded-lg"><a href="/">Contact</a></li>
+                            <li><a href="/" class="nav-link">Home</a></li>
+                            <li><a href="/products.html" class="nav-link">Products</a></li>
+                            <li><a href="" class="nav-link">About</a></li>
+                            <li><a href="" class="nav-link">Contact</a></li>
                         </ul>
                     </div>
                     <a class="text-2xl text-[#5945F7] font-bold">Swift<span class="text-black">Cart</span></a>
                 </div>
                 <div class="navbar-center hidden lg:flex">
                     <ul class="menu menu-horizontal px-1 text-base font-medium ">
-                        <li class="hover:text-[#5945F7]"><a href="/">Home</a></li>
-                        <li class="hover:text-[#5945F7]"><a href="/products.html">Products</a></li>
-                        <li class="hover:text-[#5945F7]"><a href="/">About</a></li>
-                        <li class="hover:text-[#5945F7]"><a href="/">Contact</a></li>
+                        <li><a href="/" class="nav-link">Home</a></li>
+                        <li><a href="/products.html" class="nav-link">Products</a></li>
+                        <li><a href="" class="nav-link">About</a></li>
+                        <li><a href="" class="nav-link">Contact</a></li>
                     </ul>
                 </div>
                 <div class="navbar-end">
@@ -60,13 +60,17 @@
                 <h1 class="text-2xl md:text-3xl font-extrabold text-center">Our Products</h1>
 
                 <!-- Category Section -->
-                <div class="mt-6 flex flex-wrap items-center justify-center gap-5">
-                    <button class="btn rounded-2xl hover:bg-[#5945F7] hover:text-white hover:shadow-none border-px">All</button>
-                    <button class="btn rounded-2xl hover:bg-[#5945F7] hover:text-white hover:shadow-none border-px">Electronics</button>
-                    <button class="btn rounded-2xl hover:bg-[#5945F7] hover:text-white hover:shadow-none border-px">Jeweleries</button>
-                    <button class="btn rounded-2xl hover:bg-[#5945F7] hover:text-white hover:shadow-none border-px">Men's Clothing</button>
-                    <button class="btn rounded-2xl hover:bg-[#5945F7] hover:text-white hover:shadow-none border-px">Women's Clothing</button>
+                <div id="category-container" class="mt-6 flex flex-wrap items-center justify-center gap-5">
+                    <!-- <button id="category-btn-all" onclick="handleAllProducts(this)"
+                        class="btn rounded-2xl hover:bg-[#5945F7] hover:text-white hover:shadow-none border-px btn-category">All</button> -->
+
                 </div>
+
+                <!-- Loading Spinner -->
+                <div id="loader" class="hidden flex justify-center items-center h-20">
+                    <div class="w-10 h-10 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+                </div>
+
                 <!-- Card Container -->
                 <div id="products-container" class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
                     <!-- Card -->
@@ -81,8 +85,10 @@
     <footer class="bg-[#1E2939] w-full mx-auto py-20">
         <div class="w-10/12 mx-auto flex flex-col md:flex-row items-start justify-between gap-10">
             <div class="space-y-3 flex-1">
-                <h1 class="text-[#5945F7] font-bold text-3xl md:text-2xl text-center md:text-start">Swift<span class="text-white">Cart</span></h1>
-                <p class="text-[#9098A6] text-justify">Your one-stop shop for all your fashion and lifestyle needs. Quality products,
+                <h1 class="text-[#5945F7] font-bold text-3xl md:text-2xl text-center md:text-start">Swift<span
+                        class="text-white">Cart</span></h1>
+                <p class="text-[#9098A6] text-justify">Your one-stop shop for all your fashion and lifestyle needs.
+                    Quality products,
                     fast delivery and excellent support.</p>
             </div>
             <div class="text-sm text-gray-400 flex-1 list-none space-y-3">
@@ -100,7 +106,8 @@
                 <li><a href="">Privacy Policy</a></li>
             </div>
             <div class="flex-1 space-y-3">
-                <h1 class="text-white text-2xl md:text-base text-center md:text-start font-semibold">SUBSCRIBE TO OUR NEWSLETTER</h1>
+                <h1 class="text-white text-2xl md:text-base text-center md:text-start font-semibold">SUBSCRIBE TO OUR
+                    NEWSLETTER</h1>
                 <p class="text-gray-400">The latest news, articles and resources sent to your inbox weekly.</p>
                 <div class="join">
                     <div>
@@ -122,7 +129,8 @@
         </div>
         <hr class="text-gray-400 my-4 w-9/12 mx-auto">
         <div class="flex flex-col md:flex-row space-y-3 items-center justify-between text-[#A2AAB8] w-9/12 mx-auto">
-            <p>&copy; 2026 <span class="text-[#5945F7]">Swift</span><span class="text-white">Cart</span> - All Rights Reserved.</p>
+            <p>&copy; 2026 <span class="text-[#5945F7]">Swift</span><span class="text-white">Cart</span> - All Rights
+                Reserved.</p>
             <div class="space-x-4 text-2xl">
                 <a href=""><i class="fa-brands fa-facebook"></i></a>
                 <a href=""><i class="fa-brands fa-x-twitter"></i></a>
@@ -133,6 +141,22 @@
         </div>
     </footer>
 
+    <!-- Open the modal using ID.showModal() method -->
+    <!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
+    <dialog id="detail_modal" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <!-- Details Container -->
+            <div id="details-container">
+
+            </div>
+            <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn">Close</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
 
     <script src="./script.js"></script>
 </body>
