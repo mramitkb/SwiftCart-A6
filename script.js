@@ -32,13 +32,20 @@ const showTrendingProduct = (products) => {
                             <p class="font-extrabold text-xl">$${product.price}</p>
                             <div class="flex items-center justify-between mt-auto gap-5">
                                 <button onclick="loadProductDetail(${product.id})" class="rounded-xl border border-gray-200 w-full py-2 font-medium cursor-pointer hover:bg-gray-100"><i class="fa-regular fa-eye"></i> Details</button>
-                                <button class="rounded-xl w-full bg-[#5945F7] text-white py-2 font-medium cursor-pointer hover:bg-[#432ee7]"><i class="fa-solid fa-cart-shopping"></i> Add</button>
+                                <button onclick="handleCartCount()" class="rounded-xl w-full bg-[#5945F7] text-white py-2 font-medium cursor-pointer hover:bg-[#432ee7]"><i class="fa-solid fa-cart-shopping"></i> Add</button>
                             </div>
                         </div>
                     </div>
         `
         cardContainer.appendChild(trendingCard);
+
     })
+}
+
+const handleCartCount = () => {
+    // count increase
+    const count = Number(document.getElementById("cart-count").innerText);
+    document.getElementById("cart-count").innerText = count + 1;
 }
 
 // Product Details
@@ -64,7 +71,7 @@ const showProductDetail = (product) => {
                                 <p><i class="fa-solid fa-star text-[#FDC700]"></i> ${product.rating.rate} (${product.rating.count})</p>
                             </div>
                             <div class="flex items-center justify-center mt-auto">
-                                <button class="btn rounded-xl btn-primary"><i class="fa-solid fa-cart-shopping"></i> Add to Cart</button>
+                                <button onclick="handleCartCount()" class="btn rounded-xl btn-primary"><i class="fa-solid fa-cart-shopping"></i> Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -144,9 +151,6 @@ const handleAllProducts = async (button) => {
 }
 
 
-
-
-
 // All Products
 const loadAllProducts = async () => {
     showLoader(true)
@@ -177,7 +181,7 @@ const showAllProducts = (products) => {
                             <p class="font-extrabold text-xl">$${product.price}</p>
                             <div class="flex items-center justify-between mt-auto gap-5">
                                 <button onclick="loadProductDetail(${product.id})" class="rounded-xl border border-gray-200 w-full py-2 font-medium cursor-pointer hover:bg-gray-100"><i class="fa-regular fa-eye"></i> Details</button>
-                                <button class="rounded-xl w-full bg-[#5945F7] text-white py-2 font-medium cursor-pointer hover:bg-[#432ee7]"><i class="fa-solid fa-cart-shopping"></i> Add</button>
+                                <button onclick="handleCartCount()" class="rounded-xl w-full bg-[#5945F7] text-white py-2 font-medium cursor-pointer hover:bg-[#432ee7]"><i class="fa-solid fa-cart-shopping"></i> Add</button>
                             </div>
                         </div>
                     </div>
@@ -223,3 +227,8 @@ const homeVSProducts = () => {
 }
 
 homeVSProducts();
+
+
+
+
+
